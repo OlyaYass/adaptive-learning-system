@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public record TaskResponse(
         Long id,
-        Long programDisciplineId,
+        Long topicId,
         String title,
         String description,
         Integer difficulty,

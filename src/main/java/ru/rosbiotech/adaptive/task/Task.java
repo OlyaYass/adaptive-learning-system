@@ -1,7 +1,7 @@
 package ru.rosbiotech.adaptive.task;
 
 import jakarta.persistence.*;
-import ru.rosbiotech.adaptive.academic.discipline.ProgramDiscipline;
+import ru.rosbiotech.adaptive.academic.topic.Topic;
 
 import java.math.BigDecimal;
 
@@ -14,8 +14,8 @@ public class Task {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "program_discipline_id", nullable = false)
-    private ProgramDiscipline programDiscipline;
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Topic topic;
 
     @Column(nullable = false)
     private String title;
@@ -39,28 +39,27 @@ public class Task {
     }
 
     public Task(
-            ProgramDiscipline programDiscipline,
+            Topic topic,
             String title,
             String description,
             Integer difficulty,
             Integer estimatedMinutes,
             BigDecimal maxScore
     ) {
-        this.programDiscipline = programDiscipline;
+        this.topic = topic;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
         this.estimatedMinutes = estimatedMinutes;
         this.maxScore = maxScore;
-        this.active = true;
     }
 
     public Long getId() {
         return id;
     }
 
-    public ProgramDiscipline getProgramDiscipline() {
-        return programDiscipline;
+    public Topic getTopic() {
+        return topic;
     }
 
     public String getTitle() {

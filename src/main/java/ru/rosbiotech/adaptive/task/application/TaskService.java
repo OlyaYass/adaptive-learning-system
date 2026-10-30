@@ -2,8 +2,8 @@ package ru.rosbiotech.adaptive.task.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rosbiotech.adaptive.academic.discipline.ProgramDiscipline;
-import ru.rosbiotech.adaptive.academic.discipline.ProgramDisciplineRepository;
+import ru.rosbiotech.adaptive.academic.topic.Topic;
+import ru.rosbiotech.adaptive.academic.topic.TopicRepository;
 import ru.rosbiotech.adaptive.task.Task;
 import ru.rosbiotech.adaptive.task.TaskRepository;
 import ru.rosbiotech.adaptive.task.api.CreateTaskRequest;
@@ -15,30 +15,27 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final ProgramDisciplineRepository programDisciplineRepository;
+    private final TopicRepository topicRepository;
 
     public TaskService(
             TaskRepository taskRepository,
-            ProgramDisciplineRepository programDisciplineRepository
+            TopicRepository topicRepository
     ) {
         this.taskRepository = taskRepository;
-        this.programDisciplineRepository = programDisciplineRepository;
+        this.topicRepository = topicRepository;
     }
 
     @Transactional
     public TaskResponse create(CreateTaskRequest request) {
 
-        ProgramDiscipline programDiscipline =
-                programDisciplineRepository
-                        .findById(request.programDisciplineId())
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "Дисциплина учебного плана не найдена"
-                                )
-                        );
+        Topic topic = topicRepository
+                .findById(request.topicId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Тема не найдена")
+                );
 
         Task task = new Task(
-                programDiscipline,
+                topic,
                 request.title(),
                 request.description(),
                 request.difficulty(),
@@ -50,14 +47,10 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskResponse> getByDiscipline(
-            Long programDisciplineId
-    ) {
+    public List<TaskResponse> getByTopic(Long topicId) {
 
         return taskRepository
-                .findAllByProgramDisciplineIdAndActiveTrue(
-                        programDisciplineId
-                )
+                .findAllByTopicIdAndActiveTrue(topicId)
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -67,7 +60,7 @@ public class TaskService {
 
         return new TaskResponse(
                 task.getId(),
-                task.getProgramDiscipline().getId(),
+                task.getTopic().getId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getDifficulty(),

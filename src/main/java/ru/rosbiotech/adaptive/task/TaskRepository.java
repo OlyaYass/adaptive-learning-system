@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    List<Task> findAllByProgramDisciplineIdAndActiveTrue(
-            Long programDisciplineId
-    );
+    List<Task> findAllByTopicIdAndActiveTrue(Long topicId);
 }

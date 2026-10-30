@@ -24,9 +24,9 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponse> getByDiscipline(
-            @RequestParam Long programDisciplineId
+    public List<TaskResponse> getByTopic(
+            @RequestParam Long topicId
     ) {
-        return service.getByDiscipline(programDisciplineId);
+        return service.getByTopic(topicId);
     }
 }
