@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: adaptive-learning-system
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/adaptive_learning
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
